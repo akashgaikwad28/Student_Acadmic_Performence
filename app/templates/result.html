@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results - Acash Tech</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='result.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Acash Tech</h1>
+            </div>
+            <p class="slogan">Your Student's Performance Predictions</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="results-section">
+            <h2>Prediction Results</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        {% for col in predictions.columns %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in predictions.values %}
+                    <tr>
+                        {% for cell in row %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="/download/predictions.csv" class="btn download-btn">Download Results</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Acash Tech. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

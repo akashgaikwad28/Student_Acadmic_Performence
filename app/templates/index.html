@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Prediction - Acash Tech</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Acash Tech</h1>
+            </div>
+            <p class="slogan">Predicting Student Performance</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="upload-section">
+            <h2>Upload Student Data</h2>
+            <p>Upload a CSV file containing student data and get predictions on their academic performance.</p>
+            <form action="/predict" method="POST" enctype="multipart/form-data" class="upload-form">
+                <input type="file" name="file" accept=".csv" class="file-input" required>
+                <button type="submit" class="btn submit-btn">Predict Now</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Acash Tech. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

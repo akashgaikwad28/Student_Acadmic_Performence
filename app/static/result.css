@@ -1,0 +1,122 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+/* Header */
+header {
+    background-color: #0c9b91;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.logo h1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.slogan {
+    font-size: 18px;
+    font-weight: 300;
+}
+
+/* Results Section */
+.results-section {
+    max-width: 100%; /* Ensures that the section can take the entire width */
+    margin: 40px auto; /* Center the section horizontally */
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%; /* Responsive design */
+    display: block; /* Ensures it's block-level */
+    overflow-x: auto; /* Handles table overflow if needed */
+}
+
+/* Header of Result Section */
+.results-section h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Table Styling */
+.results-table {
+    width: 100%; /* Ensure the table takes up the full width of its container */
+    margin-top: 30px;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures columns are of equal width */
+}
+
+.results-table th, .results-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+}
+
+.results-table th {
+    background-color: #0066cc;
+    color: white;
+}
+
+.results-table tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+.results-table tr:hover {
+    background-color: #ebb56f;
+}
+
+/* Download Button Styling */
+.download-btn {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.download-btn:hover {
+    background-color: #218838;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #333;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .results-table th, .results-table td {
+        padding: 8px;
+    }
+
+    .download-btn {
+        width: 100%;
+    }
+}
