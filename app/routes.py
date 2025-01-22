@@ -12,7 +12,8 @@ main = Blueprint('main', __name__)
 
 # Configurations
 UPLOAD_FOLDER = 'uploads'
-PREDICTIONS_FOLDER = 'predictions'
+PREDICTIONS_FOLDER = os.path.join(os.getcwd(), 'predictions')
+
 ALLOWED_EXTENSIONS = {'csv'}
 
 # Create necessary directories if they don't exist
@@ -39,7 +40,7 @@ def index():
 def predict():
     if 'file' not in request.files:
         return "No file part", 400
-    
+
     file = request.files['file']
     if file.filename == '':
         return "No selected file", 400
@@ -48,26 +49,39 @@ def predict():
         filename = secure_filename(file.filename)
         file_path = os.path.join(UPLOAD_FOLDER, filename)
         file.save(file_path)
-        
+
         # Process the uploaded file and get predictions
         try:
             predictions = process_uploaded_file(file_path)
             output_filename = f"predictions_{filename}"
             output_path = os.path.join(PREDICTIONS_FOLDER, output_filename)
             predictions.to_csv(output_path, index=False)
-            return render_template('result.html', predictions=predictions, download_path=output_path)
+
+            # Pass the filename to the template for the download link
+            return render_template('result.html', predictions=predictions, download_filename=output_filename)
         except Exception as e:
             logging.error(f"Error processing file: {e}")
             return f"Error processing the file: {str(e)}", 500
 
     return "Invalid file format", 400
 
+
 @main.route('/download/<filename>')
 def download_file(filename):
-    file_path = os.path.join(PREDICTIONS_FOLDER, filename)
+    sanitized_filename = secure_filename(filename)  # Secure the filename
+    file_path = os.path.join(PREDICTIONS_FOLDER, sanitized_filename)
+
+    # Debug: Print the file path
+    print(f"Looking for file: {file_path}")
+
+    # Check if the file exists
     if os.path.exists(file_path):
         return send_file(file_path, as_attachment=True)
+
+    # File not found
     return "File not found", 404
+
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
