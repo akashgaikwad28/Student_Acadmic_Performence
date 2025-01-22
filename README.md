@@ -25,11 +25,9 @@ student-performance-prediction/
 │   ├── model.py             # Machine learning model logic  
 │   ├── utils.py             # Utility functions for data processing  
 ├── data/  
-│   ├── dataset.csv          # Training dataset from Kaggle  
-│   ├── processed_data.csv   # Preprocessed dataset (optional)  
+│   ├── dataset.csv          # Training dataset from Kaggle   
 ├── notebooks/  
 │   ├── EDA.ipynb            # Exploratory Data Analysis notebook  
-│   ├── model_training.ipynb # Model training and evaluation notebook  
 ├── models/  
 │   ├── student_performance_model.pkl # Trained machine learning model  
 ├── uploads/                 # Folder for uploaded files  
