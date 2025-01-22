@@ -24,6 +24,9 @@ RUN pip install --upgrade pip \
 # Copy the rest of the application files
 COPY . /app/
 
+# Run the script to generate the model
+RUN python create_model.py
+
 # Expose the application port (adjust if your app listens on a different port)
 EXPOSE 5000
 
