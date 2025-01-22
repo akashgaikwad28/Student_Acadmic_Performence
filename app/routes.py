@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %
 main = Blueprint('main', __name__)
 
 # Configurations
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 PREDICTIONS_FOLDER = os.path.join(os.getcwd(), 'predictions')
 
 ALLOWED_EXTENSIONS = {'csv'}
@@ -22,7 +22,7 @@ os.makedirs(PREDICTIONS_FOLDER, exist_ok=True)
 
 # Load the trained model
 try:
-    model_data = joblib.load('models/student_performance_model.pkl')
+    model_data = joblib.load(os.path.join(os.getcwd(), 'models', 'student_performance_model.pkl'))
     model = model_data['model']
     gender_encoder = model_data['gender_encoder']
     support_encoder = model_data['support_encoder']
@@ -65,23 +65,21 @@ def predict():
 
     return "Invalid file format", 400
 
-
 @main.route('/download/<filename>')
 def download_file(filename):
     sanitized_filename = secure_filename(filename)  # Secure the filename
     file_path = os.path.join(PREDICTIONS_FOLDER, sanitized_filename)
 
     # Debug: Print the file path
-    print(f"Looking for file: {file_path}")
+    logging.info(f"Looking for file: {file_path}")
 
     # Check if the file exists
     if os.path.exists(file_path):
         return send_file(file_path, as_attachment=True)
 
     # File not found
+    logging.error(f"File not found: {file_path}")
     return "File not found", 404
-
-
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -99,18 +97,30 @@ def process_uploaded_file(file_path):
         raise ValueError(f"The uploaded file is missing required features: {missing_features}")
 
     # Encode categorical variables
-    input_data['Gender'] = gender_encoder.transform(input_data['Gender'])
-    input_data['ParentalSupport'] = support_encoder.transform(input_data['ParentalSupport'])
+    try:
+        input_data['Gender'] = gender_encoder.transform(input_data['Gender'])
+        input_data['ParentalSupport'] = support_encoder.transform(input_data['ParentalSupport'])
+    except Exception as e:
+        logging.error(f"Error encoding categorical features: {e}")
+        raise
 
     # Scale numerical features
     numeric_features = ['AttendanceRate', 'StudyHoursPerWeek', 'PreviousGrade']
-    input_data[numeric_features] = scaler.transform(input_data[numeric_features])
+    try:
+        input_data[numeric_features] = scaler.transform(input_data[numeric_features])
+    except Exception as e:
+        logging.error(f"Error scaling numerical features: {e}")
+        raise
 
     # Select features for prediction
     X = input_data[features]
 
     # Predict final grades
-    input_data['PredictedFinalGrade'] = model.predict(X)
+    try:
+        input_data['PredictedFinalGrade'] = model.predict(X)
+    except Exception as e:
+        logging.error(f"Error predicting final grades: {e}")
+        raise
 
     return input_data[['AttendanceRate', 'StudyHoursPerWeek', 'PreviousGrade', 
                         'ExtracurricularActivities', 'Gender', 'ParentalSupport', 
