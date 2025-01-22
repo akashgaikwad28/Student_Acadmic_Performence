@@ -30,5 +30,6 @@ RUN python create_model.py
 # Expose the application port (adjust if your app listens on a different port)
 EXPOSE 5000
 
-# Set the command to run your app
-CMD ["python", "app.py"]
+
+# Start Gunicorn with multiple workers
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
